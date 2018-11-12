@@ -1,0 +1,23 @@
+.navigation {
+    margin-bottom: -10px;
+}
+.logo{
+    height: 50px;
+    margin-left: 50%;
+
+}
+.nav_font{
+    margin-left: 5%;
+    margin-top: 14px;
+    font-size: 18px;
+
+}
+.nav_index{
+    color: #ff9900;
+}
+
+.nav_about{
+    margin-left: 5%;
+
+    color: #6699ff;
+}
