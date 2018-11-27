@@ -1,17 +1,20 @@
+
+//初始化
+$(function () {
+    var user_name = $.cookie('user_name');
+    if (user_name != "undefined"){
+        $("#login_button").html(user_name);
+    }
+});
+
+
 function userCenter() {
-
-        if(confirm("收藏功能需要登录，您是否继续？")){
-            toLogin();
-        }
-        else{
-            return;
-        }
-
+    toLogin();
 }
 
 function toLogin() {
     QC.Login.showPopup({
-        appId:"101475157",
+        appId: base.sys_param.APP_ID,
         redirectURI:"http://127.0.0.1:63343/jiandan_house_web/user.html"
     });
 }

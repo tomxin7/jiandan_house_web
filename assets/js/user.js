@@ -1,7 +1,7 @@
 //初始化页面
 
-var user = $.cookie('user');
-if(user == undefined || user == "null"){
+var user_name = $.cookie('user_name');
+if(user_name == undefined || user_name == "null"){
     var login = QC.Login.check();
     if(login == true){
         QC.Login.getMe(function(openId, accessToken){
@@ -9,10 +9,8 @@ if(user == undefined || user == "null"){
         });
     }else{
         alert("该页面需要登录后访问");
-        // location.href="index.html";
+        location.href="index.html";
     }
-}else {
-    alert(12)
 }
 
 
@@ -22,19 +20,20 @@ function getInfo(accessToken,openId) {
     var access={
         "accessToken": accessToken,
         "openId": openId,
-        // "appId": base.sys_param.APP_ID
+        "appId": base.sys_param.APP_ID
     };
-    var url = "https://graph.qq.com/user/get_user_info?access_token="+accessToken+"&oauth_consumer_key=101475157&openid="+openId;
-    console.log(url)
+    var url = base.sys_param.DOMIN + "/user";
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: url,
-        dataType: "jsonp",
+        dataType: "json",
         jsonp: 'jsoncallback',
+        data:JSON.stringify(access),
         contentType: "application/json",
         success: function (data, textStatus) {
-            var user = data['ret'];
-            alert(user)
+            $.cookie('user_name', data['nickName'], { expires: 7 });
+            alert(data['nickName']);
+            $.cookie('token', data['token'], { expires: 7 });
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
