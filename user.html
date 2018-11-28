@@ -14,8 +14,8 @@
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/jquery.cookie.js"></script>
   <script type="text/javascript" src="https://connect.qq.com/qc_jssdk.js" charset="utf-8"></script>
-  <script src="assets/js/base.js"></script>
-  <script src="assets/js/user.js"></script>
+  <script src="js/base.js"></script>
+  <script src="js/user.js"></script>
 </head>
 <body>
 <header class="am-topbar am-topbar-fixed-top">
@@ -35,7 +35,7 @@
       </ul>
 
       <div class="am-topbar-right">
-        <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm"><span class="am-icon-qq"></span> 登录</button>
+        <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm" onclick="logout()"><span class="am-icon-qq"></span> <span id="login_button"></span></button>
       </div>
     </div>
   </div>
@@ -47,7 +47,7 @@
       <h1 class="get-title">简单找房 - 实时推送，快人一步</h1>
 
       <p>
-        亲爱的：tomxin，欢迎登陆个人中心，在这里你可以管理自己正在执行的任务！
+        亲爱的：<span id="user_name"></span>，欢迎登陆个人中心，在这里你可以管理自己正在执行的任务！
       </p>
     </div>
   </div>
@@ -100,7 +100,7 @@
 <!--模态窗口-->
 <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
     <div class="am-modal-dialog">
-        <div class="am-modal-hd">Amaze UI</div>
+        <div class="am-modal-hd">简单生活</div>
         <div class="am-modal-bd">
             亲，确定要结束这个任务吗？
         </div>

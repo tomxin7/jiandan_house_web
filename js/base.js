@@ -11,6 +11,14 @@ var base ={
 }
 
 
+//判断string是否为空
+function isEmpty(str) {
+    if(str == "" || str == null || str == undefined || str == "null" ){ // "",null,undefined
+        return true;
+    }
+    return false;
+}
+
 // //百度统计
 // var _hmt = _hmt || [];
 // var hm = document.createElement("script");
