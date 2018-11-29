@@ -47,9 +47,10 @@ function getInfo(accessToken,openId) {
         data:JSON.stringify(access),
         contentType: "application/json",
         success: function (data, textStatus) {
-            $.cookie('user_name', data['nickName'], { expires: 7 });
+            $.cookie('user_name', data['nickName'], { expires: 1 });
             setUserInfo(data['nickName']);
-            $.cookie('token', data['token'], { expires: 7 });
+            $.cookie('token', data['token'], { expires: 1 });
+            set_record(data['recordList']);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -77,5 +78,14 @@ function logout() {
         location.href="index.html";
     }
     else {
+    }
+}
+
+//设置记录列表
+function set_record(record_data) {
+    for (i in record_data) {
+        var recruit = record_data[i] ;
+
+        alert(recruit.cityName)
     }
 }
