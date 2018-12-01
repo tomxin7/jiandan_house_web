@@ -28,7 +28,7 @@ function toLogin() {
     });
 }
 
-//弹出一个询问框，有确定和取消登出
+//跳转到个人中心
 function logout() {
     location.href = "user.html";
 }
@@ -56,7 +56,7 @@ function get_city() {
                 $("#city").html(option_html);
             },
             error: function () {
-                alert("添加失败");
+
             }
         });
 }
@@ -77,4 +77,42 @@ function set_city_url(value) {
     }
 
     $("#city_url").html(html_a);
+}
+
+//用户点击提交
+function submit() {
+    //利用对话框返回的值 （true 或者 false）
+    if (confirm("您确定要提交吗？")) {
+        postRecord()
+    }
+    else {
+    }
+}
+
+//添加用户的记录
+function postRecord() {
+    var email = $("#email").val();
+    if (checkEmail(email)){
+        return false;
+    }
+    var uri = "/record";
+    var body = {
+        "cityName": $("#city option:selected").text(),
+        "keyWord": $("#key").val(),
+        "remindType": $("input[name='remindType']:checked").val(),
+        "remind": $("#email").val(),
+    };
+    var callbackFunction = function (data) {
+
+    };
+
+    postInfo(body, uri, callbackFunction)
+};
+
+function checkEmail(str){
+    var re = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+    if (!re.test(str)) {
+        alert("邮箱格式不正确");
+        return true;
+    }
 }

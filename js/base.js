@@ -26,3 +26,30 @@ function isEmpty(str) {
 // var s = document.getElementsByTagName("script")[0];
 // s.parentNode.insertBefore(hm, s);
 
+/**
+ *  Ajax post请求
+ * @param body 消息体
+ * @param uri
+ * @param callbackFunction 回调的函数
+ */
+function postInfo(body, uri, callbackFunction) {
+    var Authorization = $.cookie('token');
+    $.ajax({
+        type: "POST",
+        url: base.sys_param.DOMIN + uri,
+        dataType: "json",
+        data:JSON.stringify(access),
+        contentType: "application/json",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", Authorization);
+        },
+        success: function (data) {
+            callbackFunction(data);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+        },
+        complete: function (XMLHttpRequest, textStatus) {
+        }
+    });
+};
