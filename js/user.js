@@ -10,9 +10,7 @@ if (tomxin_IsEmpty(user_name)){
         });
     }else{
         //提示用户是否要登录
-        if (confirm("该页面需要QQ登录才能访问，您是否要登录？")) {
-            toLogin()
-        }
+        alert("请登录后重试");
         location.href="index.html";
     }
 }else {
@@ -50,20 +48,13 @@ function loginInfo(accessToken,openId) {
     tomxin_PostInfo(uri, body, callbackFunction)
 }
 
-//跳转qq登录
-function toLogin() {
-    QC.Login.showPopup({
-        appId: base.sys_param.APP_ID,
-        redirectURI:"http://127.0.0.1:63343/jiandan_house_web/user.html"
-    });
-}
-
 //弹出一个询问框，有确定和取消登出
 function logout() {
     //利用对话框返回的值 （true 或者 false）
     if (confirm("您确定要登出账号吗？")) {
         $.cookie('user_name', null);
         $.cookie('token', null);
+        QC.Login.signOut();
         location.href="index.html";
     }
 }
@@ -90,26 +81,25 @@ function get_record(pageNum, pageSize) {
 
 //设置记录到前端
 function set_record(record_data) {
-    console.log(record_data)
     var html_model = '                <tr>\n' +
         '                  <td>{city}</td>\n' +
         '                  <td>{time}</td>\n' +
         '                  <td>{key}</td>\n' +
         '                  <td>{remind}</td>\n' +
-        '                  <td><button type="button" class="am-btn {am-btn}" {disabled} data-am-modal="{target: \'#my-confirm\'}">{status}</button></td>\n' +
+        '                  <td><button type="button" class="am-btn {am-btn}" {disabled} >{status}</button></td>\n' +
         '                </tr>';
     var html_result = "";
     for (i in record_data) {
         var result = record_data[i] ;
         var model = html_model;
         model = model.replace("{city}", result.cityName);
-        model = model.replace("{time}", formatDate(result.createTime));
+        model = model.replace("{time}", tomxin_FormatDate(result.createTime));
         model = model.replace("{key}", result.keyWord);
         model = model.replace("{remind}", result.remind);
         if (result.status == 1){
             model = model.replace("{status}", "结束");
             model = model.replace("{am-btn}", "am-btn-secondary");
-            model = model.replace("{disabled}", "");
+            model = model.replace("{disabled}", 'onclick="btn_stop(\'' + result.id +'\')"');
 
         } else{
             model = model.replace("{status}", "已结束");
@@ -121,25 +111,26 @@ function set_record(record_data) {
     $("#record").html(html_result);
 }
 
-
-//格式化时间
-function formatDate(time){
-    var date = new Date(time);
-    var year = date.getFullYear(),
-        month = date.getMonth() + 1,//月份是从0开始的
-        day = date.getDate(),
-        hour = date.getHours(),
-        min = date.getMinutes(),
-        sec = date.getSeconds();
-    var newTime = year + '-' +
-        month + '-' +
-        day + ' ' +
-        hour + ':' +
-        min + ':' +
-        sec;
-    return newTime;
+//点击结束按钮
+function btn_stop(id) {
+    if (confirm("您是否要结束这个任务")){
+        stop(id);
+    }
 }
 
+//结束任务
+function stop(id) {
+    var uri = "/record/"+id;
+    var body = {
+        "status": 0
+    };
+    function callbackFunction(data) {
+        alert("任务已结束");
+        get_record(0,10);
+    };
+    tomxin_PutInfo(uri, body, callbackFunction);
+
+}
 //分页
 // pageTotal: , //必填,总页数
 // pageAmount: 10,  //每页多少条
@@ -147,7 +138,6 @@ function formatDate(time){
 //     curPage:1, //初始页码,不填默认为1
 //     pageSize: 5, //分页个数,不填默认为5
 function paging(pageTotal, pageAmount, dataTotal) {
-    console.log(dataTotal)
     new Page({
         id: 'page',
         pageTotal: pageTotal, //必填,总页数
@@ -164,3 +154,4 @@ function paging(pageTotal, pageAmount, dataTotal) {
         }
     })
 }
+

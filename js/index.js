@@ -24,7 +24,7 @@ function userCenter() {
 function toLogin() {
     QC.Login.showPopup({
         appId: base.sys_param.APP_ID,
-        redirectURI:"http://127.0.0.1:63342/jiandan_house_web/user.html"
+        redirectURI:base.sys_param.CALLBACKURL
     });
 }
 
@@ -74,25 +74,9 @@ function set_city_url(value) {
     $("#city_url").html(html_a);
 }
 
-//用户点击提交
-function submit() {
-    var token = $.cookie('token');
-    if (tomxin_IsEmpty(token)) {
-        alert("请登录后重试");
-        return false;
-    }
-    //利用对话框返回的值 （true 或者 false）
-    if (confirm("您确定要提交吗？")) {
-        postRecord()
-    }
-}
-
 //添加用户的记录
 function postRecord() {
-    var email = $("#email").val();
-    if (checkEmail(email)){
-        return false;
-    }
+
     var uri = "/record";
     var body = {
         "cityName": $("#city option:selected").text(),
@@ -103,6 +87,7 @@ function postRecord() {
 
     function callbackFunction(data){
         alert("添加成功");
+        location.href='user.html';
     }
     tomxin_PostInfo(uri, body, callbackFunction)
 };
@@ -115,3 +100,24 @@ function checkEmail(str){
         return true;
     }
 }
+
+//点击提交
+$('.btn-loading-example').click(function () {
+    var token = $.cookie('token');
+    if (tomxin_IsEmpty(token)) {
+        alert("请登录后重试");
+        return false;
+    };
+    var email = $("#email").val();
+    var key = $("#key").val();
+    if (tomxin_IsEmpty(key)){
+        alert("关键字不能为空");
+        return false;
+    }
+    if (checkEmail(email)){
+        return false;
+    }
+    var $btn = $(this)
+    $btn.button('loading');
+    postRecord();
+});
