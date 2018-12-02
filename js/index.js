@@ -3,7 +3,7 @@ var city_data;
 //初始化
 $(function () {
     var user_name = $.cookie('user_name');
-    if (!isEmpty(user_name)){
+    if (!tomxin_IsEmpty(user_name)){
         $("#login_button").html(user_name);
     }
     get_city();
@@ -13,7 +13,7 @@ $(function () {
 //用户登录
 function userCenter() {
     var user_name = $.cookie('user_name');
-    if (isEmpty(user_name)){
+    if (tomxin_IsEmpty(user_name)){
         toLogin();
     }else{
         logout();
@@ -24,7 +24,7 @@ function userCenter() {
 function toLogin() {
     QC.Login.showPopup({
         appId: base.sys_param.APP_ID,
-        redirectURI:"http://127.0.0.1:63343/jiandan_house_web/user.html"
+        redirectURI:"http://127.0.0.1:63342/jiandan_house_web/user.html"
     });
 }
 
@@ -33,32 +33,27 @@ function logout() {
     location.href = "user.html";
 }
 
+
 //后端读取城市
 function get_city() {
     var option_model = '<option value="{city_value}" i="set_city_url({i})">{city}</option>';
     var option = "";
     var option_html = "";
     var uri = '/city/list';
-        $.ajax({
-            url: base.sys_param.DOMIN + uri,
-            type: 'get',
-            dataType: 'json',
-            success: function (data) {
-                city_data = data;
-                for (i in city_data) {
-                    //构建option
-                    option = option_model;
-                    option = option.replace("{city_value}", i);
-                    option = option.replace("{city}", city_data[i].cityName);
-                    option_html += option;
-                }
-                set_city_url(0);
-                $("#city").html(option_html);
-            },
-            error: function () {
-
-            }
-        });
+    function callbackFunction(data) {
+        city_data = data;
+        for (i in city_data) {
+            //构建option
+            option = option_model;
+            option = option.replace("{city_value}", i);
+            option = option.replace("{city}", city_data[i].cityName);
+            option_html += option;
+        }
+        $("#city").html(option_html);
+        //设置网址一网址二
+        set_city_url(0);
+    }
+    tomxin_GetInfo(uri, callbackFunction);
 }
 
 //设置网址一网址二
@@ -81,11 +76,14 @@ function set_city_url(value) {
 
 //用户点击提交
 function submit() {
+    var token = $.cookie('token');
+    if (tomxin_IsEmpty(token)) {
+        alert("请登录后重试");
+        return false;
+    }
     //利用对话框返回的值 （true 或者 false）
     if (confirm("您确定要提交吗？")) {
         postRecord()
-    }
-    else {
     }
 }
 
@@ -102,13 +100,14 @@ function postRecord() {
         "remindType": $("input[name='remindType']:checked").val(),
         "remind": $("#email").val(),
     };
-    var callbackFunction = function (data) {
 
-    };
-
-    postInfo(body, uri, callbackFunction)
+    function callbackFunction(data){
+        alert("添加成功");
+    }
+    tomxin_PostInfo(uri, body, callbackFunction)
 };
 
+//校验邮箱格式
 function checkEmail(str){
     var re = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
     if (!re.test(str)) {

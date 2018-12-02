@@ -11,13 +11,7 @@ var base ={
 }
 
 
-//判断string是否为空
-function isEmpty(str) {
-    if(str == "" || str == null || str == undefined || str == "null" ){ // "",null,undefined
-        return true;
-    }
-    return false;
-}
+
 
 // //百度统计
 // var _hmt = _hmt || [];
@@ -26,30 +20,4 @@ function isEmpty(str) {
 // var s = document.getElementsByTagName("script")[0];
 // s.parentNode.insertBefore(hm, s);
 
-/**
- *  Ajax post请求
- * @param body 消息体
- * @param uri
- * @param callbackFunction 回调的函数
- */
-function postInfo(body, uri, callbackFunction) {
-    var Authorization = $.cookie('token');
-    $.ajax({
-        type: "POST",
-        url: base.sys_param.DOMIN + uri,
-        dataType: "json",
-        data:JSON.stringify(access),
-        contentType: "application/json",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", Authorization);
-        },
-        success: function (data) {
-            callbackFunction(data);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
 
-        },
-        complete: function (XMLHttpRequest, textStatus) {
-        }
-    });
-};

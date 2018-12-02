@@ -1,68 +1,54 @@
 //初始化页面
+//初始化
+$(function () {
 var user_name = $.cookie('user_name');
-if (isEmpty(user_name)){
+if (tomxin_IsEmpty(user_name)){
     var login = QC.Login.check();
     if(login == true){
         QC.Login.getMe(function(openId, accessToken){
-            getInfo(accessToken,openId);
+            loginInfo(accessToken,openId);
         });
     }else{
         //提示用户是否要登录
         if (confirm("该页面需要QQ登录才能访问，您是否要登录？")) {
             toLogin()
         }
-        else {
-        }
         location.href="index.html";
     }
 }else {
     //如果已经登录过，直接去后端拿记录
+    setUserInfo(user_name);
     get_record(0,10);
 }
+});
 
-
-//初始化
-$(function () {
-    if (!isEmpty(user_name)){
-        //如果用户登录了，设置用户信息
-        setUserInfo(user_name);
-    }
-})
-
+//设置用户信息
 function setUserInfo(name) {
     $("#login_button").text("登出：" + name);
     $("#user_name").text(name);
 }
 
 //请求后端登录
-function getInfo(accessToken,openId) {
-    var access={
+function loginInfo(accessToken,openId) {
+    //需要请求的URI
+    var uri = "/user";
+    //请求的消息体
+    var body={
         "accessToken": accessToken,
         "openId": openId,
         "appId": base.sys_param.APP_ID
     };
-    var url = base.sys_param.DOMIN + "/user";
-    $.ajax({
-        type: "POST",
-        url: url,
-        dataType: "json",
-        jsonp: 'jsoncallback',
-        data:JSON.stringify(access),
-        contentType: "application/json",
-        success: function (data) {
-            $.cookie('user_name', data['nickName'], { expires: 1 });
-            setUserInfo(data['nickName']);
-            $.cookie('token', data['token'], { expires: 1 });
-            set_record(data['recordList']);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //请求成功的处理
+    function callbackFunction(data) {
+        $.cookie('user_name', data['nickName'], { expires: 1 });
+        setUserInfo(data['nickName']);
+        $.cookie('token', data['token'], { expires: 1 });
 
-        },
-        complete: function (XMLHttpRequest, textStatus) {
-            this; // 调用本次AJAX请求时传递的options参数
-        }
-    });
-};
+        get_record(0,10);
+    }
+    //发起post请求
+    tomxin_PostInfo(uri, body, callbackFunction)
+}
 
 //跳转qq登录
 function toLogin() {
@@ -75,38 +61,32 @@ function toLogin() {
 //弹出一个询问框，有确定和取消登出
 function logout() {
     //利用对话框返回的值 （true 或者 false）
-    if (confirm("您确定要登出账号嘛？")) {
+    if (confirm("您确定要登出账号吗？")) {
         $.cookie('user_name', null);
         $.cookie('token', null);
         location.href="index.html";
     }
-    else {
-    }
 }
-
 
 //后端获取记录
 function get_record(pageNum, pageSize) {
-    var Authorization = $.cookie('token');
+    //拼接发起请求的URI
     var uri = '/record?pageNum=' + pageNum + '&pageSize=' + pageSize;
-        $.ajax({
-            type: 'get',
-            dataType: "json",
-            url : base.sys_param.DOMIN + uri,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", Authorization);
-            },
-            success: function (data) {
-                set_record(data['content']);
-                if (pageNum == 0){
-                    paging(data['totalPages'], data['pageable'].pageSize, data['totalElements']);
-                }
-            },
-            error: function (data, textStatus) {
-                console.log(data)
-            }
-        });
-}
+    //请求成功后的回调函数
+    function callbackFunction(data) {
+        set_record(data['content']);
+        if (pageNum == 0){
+            paging(data['totalPages'], data['pageable'].pageSize, data['totalElements']);
+        }
+    }
+    //请求失败后的回调函数
+    function errorFunction(data){
+        console.log(data.responseJSON.message)
+    }
+    //发起ajax get请求，注意函数传参不能加括号
+    tomxin_GetInfo(uri, callbackFunction, errorFunction);
+};
+
 
 //设置记录到前端
 function set_record(record_data) {
@@ -179,7 +159,6 @@ function paging(pageTotal, pageAmount, dataTotal) {
         showSkipInputFlag:true, //是否支持跳转,不填默认不显示
         getPage: function (page) {
             //获取当前页数
-            console.log(page);
             get_record(page-1,pageAmount);
 
         }
