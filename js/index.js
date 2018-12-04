@@ -56,7 +56,7 @@ function get_city() {
     tomxin_GetInfo(uri, callbackFunction);
 }
 
-//设置网址一网址二
+//设置网址一网址二和二维码
 function set_city_url(value) {
     var city_url = city_data[value].douBanUrl;
     var url_model = '<a href="{city_url}" target="_blank">网址{city_i}</a>';
@@ -70,8 +70,20 @@ function set_city_url(value) {
         url = url.replace("{city_i}",i+1);
         html_a += "  " + url;
     }
-
     $("#city_url").html(html_a);
+    //设置二维码
+    // var city = city_data[value];
+    // if (!tomxin_IsEmpty(city.qrcode)){
+    //     var model = '            <p>　　最近在内测一个【{city}简单租房】微信号，内容是一些经过算法和人工同时审核的租房信息，如果您有需要，扫描下方二维码即可体验，如果有任何建议或者意见，请发送邮件到tomxin7@163.com，祝您生活愉快。</p>\n' +
+    //         '            <img class="img_wx" src="{qrcode}">';
+    //     model = model.replace("{qrcode}", city.qrcode);
+    //     model = model.replace("{city}", city.cityName);
+    //     $("#qr_code").html(model);
+    // }else {
+    //     model = '            <p>　　最近在内测一个【程序员的小浪漫】微信公众号号，内容是一些让生活更加简单的小工具或者网站，如果您有需要，扫描下方二维码即可体验，如果有任何建议或者意见，请发送邮件到tomxin7@163.com，祝您生活愉快。</p>\n' +
+    //         '            <img class="img_wx" src="http://qiniu.tomxin.cn/blog/180521/8Ke7g8eh53.jpg?imageslim">'
+    //     $("#qr_code").html(model);
+    // }
 }
 
 //添加用户的记录
@@ -121,3 +133,13 @@ $('.btn-loading-example').click(function () {
     $btn.button('loading');
     postRecord();
 });
+
+//跳转到个人中心
+function to_user(){
+    var token = $.cookie('token');
+    if (tomxin_IsEmpty(token)) {
+        alert("请登录后重试");
+        return false;
+    };
+    location.href = "user.html";
+}

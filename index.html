@@ -22,7 +22,7 @@
 <header class="am-topbar am-topbar-fixed-top">
   <div class="am-container">
     <h1 class="am-topbar-brand">
-      <a href="#">简单找房</a>
+      <a href="index.html">简单找房</a>
     </h1>
 
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-secondary am-show-sm-only"
@@ -32,7 +32,7 @@
     <div class="am-collapse am-topbar-collapse" id="collapse-head">
       <ul class="am-nav am-nav-pills am-topbar-nav">
         <li class="am-active"><a href="#">首页</a></li>
-        <li><a href="user.html">个人中心</a></li>
+        <li><a href="#" onclick="to_user()">个人中心</a></li>
       </ul>
 
       <div class="am-topbar-right">
@@ -46,7 +46,6 @@
   <div class="am-g">
     <div class="am-u-lg-12">
       <h1 class="get-title">简单找房 - 实时推送，快人一步</h1>
-
       <p>
         设置关键字，当豆瓣出现相关住房信息，及时推送到邮箱或者公众号，让您解放双手！
       </p>
@@ -96,7 +95,7 @@
             </div>
 
             <!--第四个输入框-->
-            <label for="email" class="about-color">邮箱</label><a class="mail_a">如何能及时收到邮件提醒？</a>
+            <label for="email" class="about-color">邮箱</label><a class="mail_a" href="http://kf.qq.com/touch/faq/150612YrMBvY150612YN3mUz.html" target="_blank">如何能及时收到邮件提醒？</a>
             <input id="email" type="email" placeholder="请输入邮箱">
             <br/>
             <button type="button" class="am-btn am-btn-primary btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '提交中...', resetText: '加载过了'}">提 交</button>
@@ -108,13 +107,15 @@
         <!--关于本站-->
         <div class="am-u-lg-6 am-u-md-8 am-u-sm-12">
           <h4 class="about-color">关于本站</h4>
-          <p>简单找房 (house.jiandan.live)会爬取当前城市的豆瓣租房小组，程序本身不会存储任何爬取到的信息，在匹配到你需要的信息后会直接推送，
-            不再错过任何优质房源，当然，豆瓣上面也混杂着一部分不良信息，请各位租房的小可爱注意分辨，房子是租来的，但是生活不是！
+          <p>　　【简单找房】是一款豆瓣/微博租房信息的监控工具，可以让你第一时间找到满意的房源，如果您是第一次访问本站，请<a href="about.html" target="_blank">点击这里</a>一分钟了解本站。
             </p>
-          <!--关于作者-->
-          <p>更多好玩的请关注微信公众号(coder8023)，如果有任何问题，请在公众号下留言，或者给我发送邮件：tomxin7@163.com。</p>
+          <!--二维码-->
+          <div id="qr_code">
+            <!--<p>　　最近在内测一个【程序员的小浪漫】微信公众号号，内容是一些让生活更加简单的小工具或者网站，如果您有需要，扫描下方二维码即可体验，如果有任何建议或者意见，请发送邮件到tomxin7@163.com，祝您生活愉快。</p>-->
+            <!--<img class="img_wx" src="http://qiniu.tomxin.cn/blog/180521/8Ke7g8eh53.jpg?imageslim">-->
+            <p>　　最近在内测一个【简单生活】微信号，内容是一些经过算法和人工同时审核的租房信息，如果您有需要，扫描下方二维码回复你的城市，例如“深圳”即可体验，如果有任何建议或者意见，请发送邮件到tomxin7@163.com，祝您生活愉快。</p>
             <img class="img_wx" src="http://qiniu.tomxin.cn/blog/180521/8Ke7g8eh53.jpg?imageslim">
-
+          </div>
         </div>
       </div>
     </div>
