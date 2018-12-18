@@ -122,6 +122,7 @@ $('.btn-loading-example').click(function () {
     };
     var email = $("#email").val();
     var key = $("#key").val();
+    key   =   key.replace(/\s+/g,"");
     if (tomxin_IsEmpty(key)){
         alert("关键字不能为空");
         return false;
