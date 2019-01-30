@@ -1,0 +1,17 @@
+.movie-content
+{
+    min-height: 600px;
+}
+.foot{
+    position:relative;
+    width:100%;
+    background-color: #333;
+    color:#eee;
+    text-align: center;
+    font-size: 16px;
+    height: 50px;
+}
+
+.foot span{
+    line-height: 50px;
+}
