@@ -3,8 +3,8 @@ var base ={
     sys_param:{
         //后端地址
         // DOMIN:"http://tomxin1.tunnel.qydev.com/v0.1",
-        // DOMIN:"http://house.jiandan.live:8083/v0.1",
-        DOMIN:"http://127.0.0.1:80/v0.1",
+        DOMIN:"http://house.jiandan.live:8083/v0.1",
+        // DOMIN:"http://127.0.0.1:80/v0.1",
         APP_ID:"101521975",
         CALLBACKURL:"http://house.jiandan.live/user.html"
         // CALLBACKURL:"http://tomxin.tunnel.qydev.com/user.html"

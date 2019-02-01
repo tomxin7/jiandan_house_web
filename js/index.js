@@ -108,7 +108,7 @@ function postRecord() {
 function checkEmail(str){
     var re = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
     if (!re.test(str)) {
-        alert("邮箱格式不正确");
+        alert("邮箱或者微信推送id格式不正确");
         return true;
     }
 }
@@ -121,15 +121,20 @@ $('.btn-loading-example').click(function () {
         return false;
     };
     var email = $("#email").val();
+    var wx = $("#wx").val();
     var key = $("#key").val();
     key   =   key.replace(/\s+/g,"");
     if (tomxin_IsEmpty(key)){
         alert("关键字不能为空");
         return false;
     }
-    if (checkEmail(email)){
-        return false;
+    //如果不是微信，判断邮箱格式
+    if (tomxin_IsEmpty(wx)) {
+        if (checkEmail(email)){
+            return false;
+        }
     }
+
     var $btn = $(this)
     $btn.button('loading');
     postRecord();
@@ -143,4 +148,17 @@ function to_user(){
         return false;
     };
     location.href = "user.html";
+}
+
+
+//切换微信
+function switch_wx() {
+    $("#mail_tips").attr("style","display: none");
+    $("#wx_tips").attr("style","");
+}
+
+//切换邮箱
+function switch_mail() {
+    $("#wx_tips").attr("style","display: none");
+    $("#mail_tips").attr("style","");
 }

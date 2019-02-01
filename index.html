@@ -47,7 +47,7 @@
     <div class="am-u-lg-12">
       <h1 class="get-title">简单找房 - 实时推送，快人一步</h1>
       <p>
-        设置关键字，当豆瓣出现相关住房信息，及时推送到邮箱或者公众号，让您解放双手！
+        设置关键字，当豆瓣出现相关住房信息，及时推送到邮箱或者微信，让您解放双手！
       </p>
     </div>
   </div>
@@ -87,16 +87,22 @@
             <label class="about-color">提醒方式</label>
             <div class="am-form-group">
               <label class="am-radio-inline">
-                <input type="radio" name="remindType" value="邮箱" data-am-ucheck checked> 邮件
+                <input type="radio" name="remindType" value="邮箱" data-am-ucheck checked onclick="switch_mail()"> 邮件
               </label>
               <label class="am-radio-inline">
-                <input type="radio" name="remindType" value="微信" data-am-ucheck disabled>微信(暂未开放)
+                <input type="radio" name="remindType" value="微信" data-am-ucheck onclick="switch_wx()">微信
               </label>
             </div>
 
             <!--第四个输入框-->
-            <label for="email" class="about-color">邮箱</label><a class="mail_a" href="http://kf.qq.com/touch/faq/150612YrMBvY150612YN3mUz.html" target="_blank">如何能及时收到邮件提醒？</a>
-            <input id="email" type="email" placeholder="请输入邮箱">
+            <div id="mail_tips">
+              <label for="email" class="about-color">邮箱</label><a class="mail_a" href="http://kf.qq.com/touch/faq/150612YrMBvY150612YN3mUz.html" target="_blank">如何能及时收到邮件提醒？</a>
+              <input id="email" type="email">
+            </div>
+            <div style="display: none" id="wx_tips">
+              <label for="email" class="about-color">微信推送id</label><a class="mail_a" href="https://docs.qq.com/doc/DQ01hQVNDbE51dHli" target="_blank">如何获取微信推送id？</a>
+              <input id="wx" type="email">
+            </div>
             <br/>
             <button type="button" class="am-btn am-btn-primary btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '提交中...', resetText: '加载过了'}">提 交</button>
           </div>
