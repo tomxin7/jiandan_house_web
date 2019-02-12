@@ -88,13 +88,16 @@ function set_city_url(value) {
 
 //添加用户的记录
 function postRecord() {
-
+    var remind = $("#email").val();
+    if (tomxin_IsEmpty(remind)){
+        remind = $("#wx").val();
+    }
     var uri = "/record";
     var body = {
         "cityName": $("#city option:selected").text(),
         "keyWord": $("#key").val(),
         "remindType": $("input[name='remindType']:checked").val(),
-        "remind": $("#email").val(),
+        "remind": remind,
     };
 
     function callbackFunction(data){
