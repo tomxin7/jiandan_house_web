@@ -111,7 +111,7 @@ function postRecord() {
 function checkEmail(str){
     var re = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
     if (!re.test(str)) {
-        alert("邮箱或者微信推送id格式不正确");
+        alert("邮箱格式不正确");
         return true;
     }
 }
@@ -136,9 +136,14 @@ $('.btn-loading-example').click(function () {
         if (checkEmail(email)){
             return false;
         }
+    }else {
+        //判断微信格式
+        if (wx.length < 20){
+            alert("请检查微信推送id格式是否正确")
+        }
     }
 
-    var $btn = $(this)
+    var $btn = $(this);
     $btn.button('loading');
     postRecord();
 });
