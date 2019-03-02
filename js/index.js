@@ -101,7 +101,7 @@ function postRecord() {
     };
 
     function callbackFunction(data){
-        alert("添加成功");
+        alert("添加成功，已向您的【"+$("input[name='remindType']:checked").val()+"】发送了一条测试消息，请注意查收");
         location.href='user.html';
     }
     tomxin_PostInfo(uri, body, callbackFunction)
