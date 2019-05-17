@@ -9,9 +9,16 @@ if (tomxin_IsEmpty(user_name)){
             loginInfo(accessToken,openId);
         });
     }else{
-        //提示用户是否要登录
-        alert("请登录后重试");
-        location.href="index.html";
+        var token = getQueryString("token");
+        if (tomxin_IsEmpty(token)){
+            //提示用户是否要登录
+            alert("请登录后重试");
+            location.href="index.html";
+            return
+        }
+        $.cookie('token', token, { expires: 1 });
+        get_user(token);
+        get_record(0, 10);
     }
 }else {
     //如果已经登录过，直接去后端拿记录
@@ -41,7 +48,7 @@ function loginInfo(accessToken,openId) {
         $.cookie('user_name', data['nickName'], { expires: 1 });
         setUserInfo(data['nickName']);
         $.cookie('token', data['token'], { expires: 1 });
-
+        $.cookie('type', "qq", { expires: 1 });
         get_record(0,10);
     }
     //发起post请求
@@ -155,3 +162,49 @@ function paging(pageTotal, pageAmount, dataTotal) {
     })
 }
 
+/**
+ * 获取url中的参数
+ * @param name
+ * @returns {*}
+ */
+function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return unescape(r[2]);
+    }
+    return null;
+}
+
+
+/**
+ * 获取用户
+ * @param token
+ */
+function get_user(token) {
+    //拼接发起请求的URI
+
+    $.ajax({
+        url: base.sys_param.UC_API + '/user/' + token,
+        type: "GET",
+        dataType: "json",
+        contentType: "application/json",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("app_id", base.sys_param.APP_ID),
+                xhr.setRequestHeader("Authorization", token);
+        },
+        success: function (data) {
+            $.cookie('user_name', data['nickName'], { expires: 1 });
+            $.cookie('type', "uc", { expires: 1 });
+            setUserInfo(data['nickName']);
+        },
+        error: function (data) {
+            $.cookie('name', null);
+            $.cookie('token', null);
+
+            // alert("登录失败");
+        },
+        complete: function (XMLHttpRequest, textStatus) {
+        }
+    });
+}

@@ -4,11 +4,13 @@ var base ={
         //后端地址
         // DOMIN:"http://tomxin1.tunnel.qydev.com/v0.1",
         DOMIN:"http://house.jiandan.live:8083/v0.1",
-        // DOMIN:"http://127.0.0.1:80/v0.1",
+        // DOMIN:"http://127.0.0.1:8083/v0.1",
         APP_ID:"101521975",
+        CallbackURL:"http://house.jiandan.live/user.html",
+        // CallbackURL:"http://localhost:63343/jiandan_house_web/user.html",
+        AppName:"house",
+        UC_API:"http://uc.jiandan.live:8084/v0.1",
         CALLBACKURL:"http://house.jiandan.live/user.html"
-        // CALLBACKURL:"http://tomxin.tunnel.qydev.com/user.html"
-        // CALLBACKURL:"http://127.0.0.1:63342/jiandan_house_web/index.html"
     }
 }
 

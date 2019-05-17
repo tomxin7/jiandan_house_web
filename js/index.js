@@ -3,8 +3,14 @@ var city_data;
 //初始化
 $(function () {
     var user_name = $.cookie('user_name');
+    var type = $.cookie('type');
+
     if (!tomxin_IsEmpty(user_name)){
         $("#login_button").html(user_name);
+        if (!tomxin_IsEmpty(type)){
+            $("#l_but").attr("style", "display: none");
+            $("#login").html(user_name);
+        }
     }
     get_city();
 });
@@ -20,12 +26,31 @@ function userCenter() {
     }
 }
 
+//新版登录
+function newLogin() {
+    var user_name = $.cookie('user_name');
+    if (tomxin_IsEmpty(user_name)){
+        toNewLogin();
+    }else{
+        logout();
+    }
+}
+
 //登录
 function toLogin() {
+    alert("旧版QQ登录即将下线，只能查看和关闭任务")
     QC.Login.showPopup({
         appId: base.sys_param.APP_ID,
         redirectURI:base.sys_param.CALLBACKURL
     });
+}
+
+//新登录
+function toNewLogin() {
+    var CallbackURL = base.sys_param.CallbackURL;
+    var AppName = base.sys_param.AppName
+    var AppId= base.sys_param.APP_ID
+    window.location.href="http://uc.tomxin.cn/index.html?CallbackURL="+CallbackURL + "&AppName="+AppName+"&AppId="+AppId;
 }
 
 //跳转到个人中心
@@ -88,6 +113,7 @@ function set_city_url(value) {
 
 //添加用户的记录
 function postRecord() {
+
     var remind = $("#email").val();
     if (tomxin_IsEmpty(remind)){
         remind = $("#wx").val();
@@ -123,6 +149,11 @@ $('.btn-loading-example').click(function () {
         alert("请登录后重试");
         return false;
     };
+    var type = $.cookie('type');
+    if (type != "uc"){
+        alert("旧版登录不允许新增任务");
+        return
+    }
     var email = $("#email").val();
     var wx = $("#wx").val();
     var key = $("#key").val();
